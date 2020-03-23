@@ -4,6 +4,8 @@
 # A palindromic number reads the same both ways. The largest palindrome made from the product of two 2-digit numbers is 9009 = 91 × 99.
 
 # Find the largest palindrome made from the product of two 3-digit numbers.
+import time
+start_time = time.time()
 
 def isPalindrom(number: int):
 	str_num = str(number)
@@ -24,3 +26,6 @@ def do_stuff():
 	print(max_number)
 
 do_stuff()
+seconds = time.time() - start_time
+print('Time Taken:', time.strftime("%H:%M:%S",time.gmtime(seconds)))
+print("--- %s seconds ---" % (time.time() - start_time))

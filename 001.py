@@ -4,10 +4,14 @@
 # If we list all the natural numbers below 10 that are multiples of 3 or 5, we get 3, 5, 6 and 9. The sum of these multiples is 23.
 
 # Find the sum of all the multiples of 3 or 5 below 1000.
-
+import time
+start_time = time.time()
 sum = 0
 for i in range(1, 1000):
-	elif i % 3 == 0 or i % 5 == 0:
+	if i % 3 == 0 or i % 5 == 0:
 		sum += i
 
 print(sum)
+seconds = time.time() - start_time
+print('Time Taken:', time.strftime("%H:%M:%S",time.gmtime(seconds)))
+print("--- %s seconds ---" % (time.time() - start_time))

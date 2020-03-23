@@ -7,6 +7,8 @@
 
 # By considering the terms in the Fibonacci sequence whose values
 # do not exceed four million, find the sum of the even-valued terms.
+import time
+start_time = time.time()
 
 f0 = 1
 f1 = 1
@@ -20,3 +22,6 @@ while new_val < 4000000:
 	f1 = new_val
 
 print(sum_even)
+seconds = time.time() - start_time
+print('Time Taken:', time.strftime("%H:%M:%S",time.gmtime(seconds)))
+print("--- %s seconds ---" % (time.time() - start_time))
