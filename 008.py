@@ -25,6 +25,7 @@
 # Find the thirteen adjacent digits in the 1000-digit number that have the
 # greatest product. What is the value of this product?
 import time
+
 start_time = time.time()
 
 number = """73167176531330624919225119674426574742355349194934
@@ -52,18 +53,18 @@ digits_number = 13
 max_prod = 1
 digits = ""
 
-for i in range(0,len(number)-digits_number):
-	prod = 1
-	for j in range(digits_number):
-		prod *= int(number[i+j])
-	# print("prod:", prod, "number[i:i+digits_number]:", number[i:i+digits_number])
-	if max_prod < prod:
-		max_prod = prod
-		digits = number[i:i+digits_number]
+for i in range(0, len(number) - digits_number):
+    prod = 1
+    for j in range(digits_number):
+        prod *= int(number[i + j])
+    # print("prod:", prod, "number[i:i+digits_number]:", number[i:i+digits_number])
+    if max_prod < prod:
+        max_prod = prod
+        digits = number[i:i + digits_number]
 
 print(max_prod)
 seconds = time.time() - start_time
-print('Time Taken:', time.strftime("%H:%M:%S",time.gmtime(seconds)))
+print('Time Taken:', time.strftime("%H:%M:%S", time.gmtime(seconds)))
 print("--- %s seconds ---" % (time.time() - start_time))
 
 # from string import whitespace
@@ -73,4 +74,4 @@ print("--- %s seconds ---" % (time.time() - start_time))
 # nos = [int(c) for line in number for c in line if c not in whitespace]
 # print(max([functools.reduce(mul, nos[i:i+13]) for i in range(len(nos)-13)]))
 seconds = time.time() - start_time
-print('Time Taken:', time.strftime("%H:%M:%S",time.gmtime(seconds)))
+print('Time Taken:', time.strftime("%H:%M:%S", time.gmtime(seconds)))
