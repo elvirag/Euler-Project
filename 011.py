@@ -28,7 +28,10 @@
 
 # What is the greatest product of four adjacent numbers in the
 # same direction (up, down, left, right, or diagonally) in the 20×20 grid?
+import operator
+from functools import reduce
 
+import numpy as np
 
 grid = """08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
 49 49 99 40 17 81 18 57 60 87 17 40 98 43 69 48 04 56 62 00
@@ -51,6 +54,11 @@ grid = """08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
 20 73 35 29 78 31 90 01 74 31 49 71 48 86 81 16 23 57 05 54
 01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48"""
 
+
+def prod(iterable):
+	return reduce(operator.mul, iterable, 1)
+
+
 magic_number = 4
 
 numbers_grid = list()
@@ -60,28 +68,42 @@ for line in grid.splitlines():
 	numbers_grid.append(line)
 
 max_prod = 0
-sum_hor = 1
-sum_ver = 1
-sum_diag = 1
-for i in range(len(numbers_grid[0]) - magic_number + 1):
-	for j in range(len(numbers_grid) - magic_number + 1):
-		for k in range(magic_number):
-			sum_hor *= numbers_grid[i + k][j]
-			sum_ver *= numbers_grid[i][j + k]
-			sum_diag *= numbers_grid[i + k][j + k]
-		# print(sum_ver, sum_diag, sum_hor)
-		if max_prod < max(sum_diag, sum_ver, sum_hor):
-			max_prod = max(sum_diag, sum_ver, sum_hor)
-		sum_ver = 1
-		sum_hor = 1
-		sum_diag = 1
+# vertical top
+for i in range(len(numbers_grid) - magic_number):
+	for j in range(len(numbers_grid)):
+		vertical_top = prod([numbers_grid[i + x][j] for x in range(0, magic_number)])
+		max_prod = max(vertical_top, max_prod)
+# vertical bottom
+for i in range(magic_number, len(numbers_grid)):
+	for j in range(len(numbers_grid)):
+		vertical_bottom = prod([numbers_grid[i - x][j] for x in range(0, magic_number)])
+		max_prod = max(vertical_bottom, max_prod)
+# horizontal left
+for i in range(len(numbers_grid)):
+	for j in range(len(numbers_grid) - magic_number):
+		horizontal_l = prod([numbers_grid[i][j + x] for x in range(0, magic_number)])
+		max_prod = max(horizontal_l, max_prod)
+# horizontal right
+for i in range(len(numbers_grid)):
+	for j in range(magic_number, len(numbers_grid)):
+		horizontal_r = prod([numbers_grid[i][j - x] for x in range(0, magic_number)])
+		max_prod = max(horizontal_r, max_prod)
+# diagonal
+for i in range(len(numbers_grid) - magic_number):
+	for j in range(len(numbers_grid) - magic_number):
+		horizontal = prod([numbers_grid[i + x][j + x] for x in range(0, magic_number)])
+		max_prod = max(horizontal, max_prod)
 # other diag
-sum_diag = 1
-for i in reversed(range(magic_number - 1, len(numbers_grid[0]))):
-	for j in reversed(range(magic_number - 1, len(numbers_grid))):
-		for k in range(magic_number):
-			sum_diag *= numbers_grid[i - k][j - k]
-		if max_prod < sum_diag:
-			max_prod = sum_diag
-		sum_diag = 1
+for i in reversed(range(len(numbers_grid) - magic_number)):
+	for j in reversed(range(magic_number, len(numbers_grid))):
+		other_diag = prod([numbers_grid[i + x][j - x] for x in range(0, magic_number)])
+		max_prod = max(other_diag, max_prod)
 print(max_prod)
+
+# grid = np.array(numbers_grid)
+#
+# horiz = max(np.prod(grid[i, j:j + 4]) for i in range(20) for j in range(17))
+# vert = max(np.prod(grid[i:i + 4, j]) for i in range(17) for j in range(20))
+# d1 = max(np.prod(np.diag(grid[i:i + 4, j:j + 4])) for i in range(17) for j in range(17))
+# d2 = max(np.prod(np.diag(grid[i:i + 4, j + 4:j:-1])) for i in range(17) for j in range(17))
+# print(max(horiz, vert, d1, d2))
